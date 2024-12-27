@@ -28,12 +28,16 @@ def new(request):
 @login_required
 def create(request):
     if request.method == "POST":
-        title = request.POST.get("title")
-        content = request.POST.get("content")
-
-        article = Article(title=title, content=content)
-        article.save()
-        return redirect("articles:article_detail", article.id)
+        form = ArticleForm(request.POST, request.FILES)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.author = request.user
+            article.save()
+            return redirect("articles:article_detail", article.id)
+    else:
+        form = ArticleForm()
+    context={"form":form}
+    return redirect("articles:new", article.id)
 
 # show the article`s content`
 def article_detail(request, pk):
@@ -70,3 +74,14 @@ def update(request, pk):
     article.content = request.POST.get("content")
     article.save()
     return redirect("articles:article_detail", article.pk)
+
+@login_required
+def toggle_like(request, pk):
+    article = get_object_or_404(Article, pk=pk)
+    if request.user != article.author:  # 본인의 게시물은 찜 불가
+        if request.user in article.liked_by.all():
+            article.liked_by.remove(request.user)  # 찜 취소
+        else:
+            article.liked_by.add(request.user)  # 찜 추가
+    return redirect('articles:articles')
+
