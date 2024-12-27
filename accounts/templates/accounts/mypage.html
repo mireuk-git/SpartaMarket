@@ -11,12 +11,24 @@
         <p>Last name: {{ user.last_name}}</p>
     </div>
     <div name="want_item">
-        <label>내가 등록한 목품</label>
-        <ul>
+        <label for="liked">내가 등록한 목품</label>
+        <ul name="my">
+            {% for article in my %}
+                <li><a href="{% url 'articles:article_detail' article.id %}"> 
+                        <div>[{{ article.id }}] {{ article.title }} / {{article.author}}</div>
+                </a></li>
+            {% endfor %}
         </ul>
     </div>
     <div name="want_item">
         <label>내가 찜한 물건</label>
+        <ul name="liked">
+            {% for article in liked %}
+                <li><a href="{% url 'articles:article_detail' article.id %}"> 
+                        <div>[{{ article.id }}] {{ article.title }} / {{article.author}}</div>
+                </a></li>
+            {% endfor %}
+        </ul>
     </div>
 
     

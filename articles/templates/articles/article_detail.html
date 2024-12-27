@@ -3,13 +3,30 @@
 {% block content %}
 
     <h1>{{ article.title }}</h1>
+    <p> {{article.author}}</p>
 
     <form action="{% url 'articles:delete' article.pk %}" method="POST">
         {% csrf_token %}
         <input type="submit" value="글삭제">
     </form> 
+    
     <a href="{% url 'articles:edit' article.pk %}"><button>글수정</button></a>
     <a href="{% url 'articles:articles' %}"><button>목록으로</button></a>
+
+    <!--찜하기 toggle button-->
+    {% if request.user != article.author %}
+        {% if request.user in article.liked_by.all %}
+            <form action="{% url 'articles:toggle_like' article.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">찜 취소</button>
+            </form>
+        {% else %}
+            <form action="{% url 'articles:toggle_like' article.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">찜하기</button>
+            </form>
+        {% endif %}
+    {% endif %}
 
     <div>
         <p>
@@ -18,6 +35,7 @@
             수정일시: {{ article.updated_at }}
         </p>
     </div>
+
     <hr>
     <p>{{ article.content }}</p>
     <hr>

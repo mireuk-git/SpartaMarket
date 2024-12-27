@@ -3,9 +3,9 @@
 
 {% block content %}
 <a href="{% url 'articles' %}">목록으로</a>
-<h1>New Article</h1>
-
-<form action="{% url 'articles:create' %}" method="POST">
+<h1>새 게시글 작성</h1>
+<p> 제목에 판매하시는 물건 이름을, 내용에 물건에 대한 상세 정보 등을 적어주세요. </p>
+<form action="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">저장</button>
