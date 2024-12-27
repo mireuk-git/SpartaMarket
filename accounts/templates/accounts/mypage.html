@@ -1,0 +1,33 @@
+{% extends "base.html"%}
+{%block content %}
+    <h1>My page</h1>
+    
+    <h1>{{ user }}</h1> 
+    <button>팔로우</button>
+    <div>
+        <p>가입일: {{ user.date_joined }}</p>
+        <p>email: {{user.email}}</p>
+        <p>First name: {{ user.first_name}}</p>
+        <p>Last name: {{ user.last_name}}</p>
+    </div>
+    <div name="want_item">
+        <label>내가 등록한 목품</label>
+        <ul>
+        </ul>
+    </div>
+    <div name="want_item">
+        <label>내가 찜한 물건</label>
+    </div>
+
+    
+    <a href="{% url 'accounts:update' %}"><button>계정 정보 수정</button></a>
+    <a href="{% url 'accounts:change_password' %}"><button>비밀번호 변경</button></a>
+
+    <form action="{% url "accounts:delete" %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="회원탈퇴"></input>
+    </form>
+    
+
+    <a href="{% url 'articles:articles' %}"><button>돌아가기</button></a>
+{% endblock content %}
