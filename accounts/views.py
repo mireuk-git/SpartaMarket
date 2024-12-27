@@ -64,7 +64,12 @@ def update(request):
 # render mypage
 def mypage(request):
     if request.user.is_authenticated:
-        return render(request, "accounts/mypage.html")
+        context={
+            'my':request.user.my_articles.all(),
+            'liked':request.user.liked_articles.all()
+        }
+        return render(request, "accounts/mypage.html",context)
+    
     return redirect("accounts:login")
 
 # change password

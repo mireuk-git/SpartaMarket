@@ -83,5 +83,5 @@ def toggle_like(request, pk):
             article.liked_by.remove(request.user)  # 찜 취소
         else:
             article.liked_by.add(request.user)  # 찜 추가
-    return redirect('articles:articles')
+    return redirect('articles:article_detail',article.id)
 
